@@ -1,34 +1,61 @@
-import React from 'react'
+import React from 'react';
 import Player from './Player';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { artistsArray } from "../assets/database/artists"; 
+import { songsArray } from "../assets/database/songs"; 
 
 const Song = () => {
+  const { id } = useParams();
+
+  const { image, name, duration, artist, audio} = songsArray.filter(
+    (currentSongObj) => currentSongObj.id === Number(id))[0];
+
+  const artistObj = artistsArray.filter(
+    (currentArtistObj) => currentArtistObj.name === artist)[0];
+
+  const songsArrayFromArtist = songsArray.filter(
+    (currentSongObj) => currentSongObj.artist === artist
+  );
+
+  const randomIndex = Math.floor(
+    Math.random() * (songsArrayFromArtist.length - 1));
+  
+  const randomIndex2 = Math.floor(
+    Math.random() * (songsArrayFromArtist.length - 1));
+  
+  const randomIdFromArtist = songsArrayFromArtist[randomIndex].id;
+
+  const randomIdFromArtist2 = songsArrayFromArtist[randomIndex2].id;
+
   return (
     <div className="song">
       <div className="song__container">
         <div className="song__image-container">
             < img
-              src="https://i.scdn.co/image/ab67616d00001e022774b00531d558bc19e12a24" 
-              alt="Image da Música"
+              src={image} 
+              alt={`Imagem da música ${name}`}
             />
         </div>
       </div>
 
       <div className="song__bar">
-        <Link to="/artist/1" className="song__artist-image">
+        <Link to={`/artist/${artistObj.id}`} className="song__artist-image">
           <img 
             width={75}
             height={75}
-            src="https://i.scdn.co/image/ab67616100005174668a5535093f4cc53b1fef45" 
-            alt="Imagem do Artista y" 
+            src={artistObj.image} 
+            alt={`Imagem do artista ${artist}`} 
           />
         </Link>
 
-        <Player />
+        <Player 
+        duration={duration} 
+        randomIdFromArtist={randomIdFromArtist} 
+        randomIdFromArtist2={randomIdFromArtist2} />
 
         <div>
-          <p className="song__name">Última Saudade - Ao Vivo</p>
-          <p>Henrique & Juliano</p>
+          <p className="song__name">{name}</p>
+          <p>{artist}</p>
         </div>
       </div>
     </div>
