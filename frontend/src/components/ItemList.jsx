@@ -7,7 +7,7 @@ const ItemList = ({ title, items, itemsArray, path, idPath }) => {
 
   const { pathname } = useLocation();
   const isHome = pathname === "/";
-  const finalItems= isHome ? items : Infinity; 
+  const finalItems = isHome ? items : Infinity; 
 
   return (
     <div className="item-list">
